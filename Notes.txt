@@ -1,0 +1,301 @@
+--------------Syntax:---------------------------------
+
+Introduced: let and const to declare varibale. Before, it used to be just
+var. 
+Hoisting is a result of how JavaScript is interpreted by 
+your browser. Essentially, before any JS code is executed, all
+variables are "hoisted", which means they are raised to the top of 
+function scope.
+
+Varibles declared with let and const eliminates this specific issue of hoisting because
+they are scoped to the block, not to the function. Previously, when you used var, variables
+were either scoped globally or locally to an entire function scope. 
+// Output undefined
+function getClothing(isCold) {
+  if (isCold) {
+    var freezing = 'Grab a jacket!';
+  } else {
+    var hot = 'It’s a shorts kind of day.';
+    console.log(freezing);
+  }
+}
+// In runtime this function would look like this
+function getClothing(isCold) {
+  var freezing, hot;
+  if (isCold) {
+    freezing = 'Grab a jacket!';
+  } else {
+    hot = 'It’s a shorts kind of day.';
+    console.log(freezing);
+  }
+}
+
+If a variable is declared using let or const inside a block of code (denoted by curly braces {}), then 
+the variable is stuck in what is known as the temporal dead zone until the variable's declaration is 
+processed.
+// This one outputs ReferenceError: freezing is not defined.
+unction getClothing(isCold) {
+  if (isCold) {
+    const freezing = 'Grab a jacket!';
+  } else {
+    const hot = 'It’s a shorts kind of day.';
+    console.log(freezing);
+  }
+}
+
+Rules for usign let and const
+-- Variables declared with let can be reassigned, but can not be redeclared in the same scope
+-- Variables declared with const must be assigned an initial value but can not be redeclared in the 
+   same scope and can not be reassigned.
+
+DO NOT USE VAR PLEASE !!!
+
+Template Literals:
+are essentially string literals that include embedded expression.
+
+Denoted with backticks(``) or double quotes(""), template literals can contain
+placeholders which are represented using ${expression}. This makes it much easier to build
+strings. Template literal also preserves the new line character as a String. 
+let message = `${student.name} please see ${teacher.name} in ${teacher.room} to pick up your report card.`;
+
+Destructuring:
+Destructuring borrows inspiration from languages like Perl and Pyton by allowing you to specify the elements 
+you want to extract froma an array or object on the left side of an assignment. It sounds little weird, but you
+can actually achieve the same result as before, but much less code; and it's still easy to understand.
+
+Let's look at both examples:
+const point = [10, 25, -34];
+const [x, y, z] = point;
+console.log(x, y, z);
+
+[] represent the array being destructed and x, y and z represents the variable where you want to store the values 
+from the array. You can also do 
+const [x, ,z] = point to ignore y coordinate. 
+
+const gemstone = {
+  type: 'quartz',
+  color: 'rose',
+  carat: 21.29
+};
+const {type, color, carat} = gemstone;
+console.log(type, color, carat);
+
+let {color} = gemstone; //will only select color property form gemstone object. 
+
+
+Another example:
+const circle = {
+  radius: 10,
+  color: 'orange',
+  getArea: function() {
+    return Math.PI * this.radius * this.radius;
+  },
+  getCircumference: function() {
+    return 2 * Math.PI * this.radius;
+  }
+};
+
+let {radius, getArea, getCircumference} = circle;
+
+In above code snippet, the getArea returns NAN because it no longer
+has access to this in the circle object whihc results in an area that is NaN. 
+
+Object Literal Shorthand:
+You can remove those duplicate variable names from object properties if the properties have the same 
+name as the variables being assigned to them. Like this
+
+let type = 'quarts';
+let color = 'rose';
+let carat = 21.29;
+
+let gemstone ={type,color,carat};
+
+Shorthand way of adding function
+let type = 'quartz';
+let color = 'rose';
+let carat = 21.29;
+
+const gemstone = {
+  type,
+  color,
+  carat,
+  calculateWorth: function() {
+    // will calculate worth of gemstone based on type, color, and carat
+  }
+};
+Here is the shorthand way of adding function
+let gemstone = {
+  type,
+  color,
+  carat,
+  calculateWorth() { ... }
+};
+
+---------------Iteration:-----------------------------------
+The for...of loop is the most recent addition to the family of for loops in JS. 
+It combines the strength of its siblings, the for loop and the for..in loop, to loop 
+over any type of data that is iterable (meaning it follows the iterable protocol). By default, 
+this includes the data types String, Array, Map and Set - notably absent from this list is the 
+Object data type (ie {}). Objects are not iterable, by default. 
+
+The for...in loop:
+const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+for (const index in digits) {
+  console.log(digits[index]);
+}
+The drawback of for...in loop is that when you need to add an extra method to an array(or another object). Because for...in loops
+loop over all enumerable properties, this means if youa dd any additional properties in array's prototype, then 
+those properties will also appear in the loop 
+Exp:
+Array.prototype.decimalfy = function() {
+  for (let i = 0; i < this.length; i++) {
+    this[i] = this[i].toFixed(2);
+  }
+};
+
+const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+for (const index in digits) {
+  console.log(digits[index]);
+}
+Note: The forEach loop is another type of for loop in JS. However, it is actually an array method, so it can only be used exclusively 
+with arrays. There is also no way to stop or break a forEach loop. 
+
+For...of loop:
+The for...of loop is used to loop over any type of data that is iterable.
+const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+for (const digit of digits) {
+  console.log(digit);
+}
+
+You can also stop or break a for...of loop at anytime. 
+const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+for (const digit of digits) {
+  if (digit % 2 === 0) {
+    continue;
+  }
+  console.log(digit);
+}
+
+Spread Operator:
+The Spread Operator written with three consecutive dots (...), is new in ES6 
+and gives you the ability to expand, or spread, iteratble objects into multiple 
+elements. 
+
+onst books = ["Don Quixote", "The Hobbit", "Alice in Wonderland", "Tale of Two Cities"];
+console.log(...books);
+//prints: Don Quixote The Hobbit Alice in Wonderland Tale of Two Cities
+
+const primes = new Set([2, 3, 5, 7, 11, 13, 17, 19, 23, 29]);
+console.log(...primes);
+//prints: 2 3 5 7 11 13 17 19 23 29
+
+// To concatenate an array
+const fruits = ["apples", "bananas", "pears"];
+const vegetables = ["corn", "potatoes", "carrots"];
+const produce = fruits.concat(vegetables);
+console.log(produce);
+
+Using spread to concatenate an array.
+const fruits = ["apples", "bananas", "pears"];
+const vegetables = ["corn", "potatoes", "carrots"];
+const produce = [...fruits ,...vegetables];
+console.log(produce);
+
+Rest Parameter:
+The rest parameter, also written with three consecutive dots (...),
+allows you to represent an indefinite number of elements as an array.
+This can be helpful in a couple of different situations.
+One situation is when assigning the values of an array to variables. 
+For example:
+
+const order = [20.17, 18.67, 1.50, "cheese", "eggs", "milk", "bread"];
+const [total, subtotal, tax, ...items] = order;
+console.log(total, subtotal, tax, items);
+//Prints: 20.17 18.67 1.5 ["cheese", "eggs", "milk", "bread"]
+
+This code takes the values of the order array and assigns them to individual variables
+using Destructuring. total, subtotal and tax are assigned the first three values in the array.
+By using the rest parameter, items is assigned the rest of the values in the array (as an array);
+
+Variadic functions:
+Variadic functions are functions that take an indefinite number of arguments. In past, these kind of functions 
+used to be handled using the arguments object. The arguments object is an array-like object that is available as a local
+variable inside all functions. It contains a value for each arguments being passed to the function starting at 0 for the first
+argument, 1 for the second argument and so on. With that we can do this:
+
+
+function sum() {
+  let total = 0;  
+  for(const argument of arguments) {
+    total += argument;
+  }
+  return total;
+}
+
+Using the rest parameter:
+function sum(...nums) {
+  let total = 0;  
+  for(const num of nums) {
+    total += num;
+  }
+  return total;
+}
+
+
+-------------------------Functions---------------------------
+Arrow functions:
+The following arrow function takes a list of names and converts each one to uppercase 
+using regular function.
+const upperizedNames = ['Farrin', 'Kagure', 'Asser'].map(function(name) { 
+  return name.toUpperCase();
+});
+The code below does the same thing but it uses arrow function.
+const upperizedNames = ['Farrin', 'Kagure', 'Asser'].map(
+  name => name.toUpperCase()
+);
+
+NOTE: Not sure how map() works? It's a method on the Array prototype. You pass a function to it, and it calls that function 
+once on every element in the array. It then gathers the returned values from each function call and makes a new array with 
+those results. 
+
+More about Arrow Functions:
+Arrow function can only be used where an expression is valid. This includes being
+-- stored in a variable
+-- passed as an argument to a function
+-- and stored in an object's property.
+For exp: a function being stored in variable.
+const greet = name => 'hello ${name}!';
+IF there are two or more items in parameter list, or if there are zero items in the list, then you need to wrap the list in 
+parenthesis.
+// empty parameter list requires parentheses
+const sayHi = () => console.log('Hello Udacity Student!');
+sayHi();
+// multiple parameters requires parentheses
+const orderIceCream = (flavor, cone) => console.log(`Here's your ${flavor} ice cream in a ${cone} cone.`);
+orderIceCream('chocolate', 'waffle');
+
+This format of the function body is called the "concise body syntax". The concise syntax:
+
+-- has no curly braces surrounding the function body
+-- and automatically returns the expression.
+
+If you need more than just a single line of code in your arrow function's body, then you can use the "block body syntax".
+
+const upperizedNames = ['Farrin', 'Kagure', 'Asser'].map( name => {
+  name = name.toUpperCase();
+  return `${name} has ${name.length} characters in their name`;
+});
+Important things to keep in mind with the block syntax:
+
+it uses curly braces to wrap the function body
+and a return statement needs to be used to actually return something from the function.
+
+When you do not want to use Arrow Function:
+-- there's a gotcha with the this keyword in arrow functions
+    go to the next lesson to find out the details!
+-- arrow functions are only expressions
+    there's no such thing as an arrow function declaration
